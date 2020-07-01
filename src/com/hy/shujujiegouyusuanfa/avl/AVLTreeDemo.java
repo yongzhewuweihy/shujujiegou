@@ -10,7 +10,8 @@ import lombok.Setter;
 public class AVLTreeDemo {
     public static void main(String[] args) {
         //int[] arr = {4, 3, 6, 5, 7, 8};
-        int[] arr = {10, 12, 8, 9, 7, 6};
+//        int[] arr = {10, 12, 8, 9, 7, 6};
+        int[] arr = { 10, 11, 7, 6, 8, 9 };
         AVLTree avlTree = new AVLTree();
         for (int i : arr) {
             avlTree.insert(new Node(i));
@@ -24,7 +25,7 @@ public class AVLTreeDemo {
         System.out.println("左子树的高度" + avlTree.getRootNode().getLeft().height());
         System.out.println("右子树的高度" + avlTree.getRootNode().getRight().height());
 
-        System.out.println("根节点是"+avlTree.getRootNode());
+        System.out.println("根节点是" + avlTree.getRootNode());
     }
 }
 
@@ -242,11 +243,26 @@ class Node {
         }
         //当添加完一个节点后，如果（右子树高度-左子树高度）>1 ,左旋转
         if (this.rightHeight() - this.leftHeight() > 1) {
-            leftRotata();
+            if (this.getRight() != null && this.getRight().leftHeight() > this.getRight().rightHeight()) {
+                this.getRight().rightRotate();
+                leftRotata();
+            } else {
+                leftRotata();
+            }
+            return;
         }
 
         if (this.leftHeight() - this.rightHeight() > 1) {
-            rightRotate();
+            //如果当前节点的左子节点的右子树高度大于当前节点的左子节点的左子树高度
+            if (this.getLeft() != null && this.getLeft().rightHeight() > this.getLeft().leftHeight()) {
+                //当前节点的左子节点进行左旋转
+                this.getLeft().leftRotata();
+                //当前节点进行右旋转
+                this.rightRotate();
+            } else {
+                rightRotate();
+            }
+
         }
     }
 
